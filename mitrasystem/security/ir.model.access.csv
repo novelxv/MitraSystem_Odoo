@@ -4,3 +4,5 @@ access_mitrasystem_schedule,mitrasystem.schedule,model_mitrasystem_schedule,base
 access_mitrasystem_handover,mitrasystem.handover,model_mitrasystem_handover,base.group_user,1,1,1,1
 access_mitrasystem_staff_admin,mitrasystem.staff,model_mitrasystem_staff,base.group_user,1,1,1,1
 access_mitrasystem_staff_readonly,mitrasystem.staff,model_mitrasystem_staff,base.group_public,1,0,0,0
+access_mitrasystem_project_report_admin,mitrasystem.project.report,model_mitrasystem_project_report,base.group_user,1,1,1,1
+access_mitrasystem_project_report_readonly,mitrasystem.project.report,model_mitrasystem_project_report,base.group_public,1,0,0,0

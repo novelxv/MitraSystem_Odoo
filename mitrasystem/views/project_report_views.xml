@@ -1,0 +1,46 @@
+<odoo>
+    <record id="view_project_report_form" model="ir.ui.view">
+        <field name="name">mitrasystem.project.report.form</field>
+        <field name="model">mitrasystem.project.report</field>
+        <field name="arch" type="xml">
+            <form string="Laporan Proyek">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="type"/>
+                        <field name="project_id"/>
+                        <field name="period"/>
+                        <field name="created_by"/>
+                        <field name="created_date"/>
+                        <field name="format"/>
+                        <field name="attachment" filename="filename"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_project_report_list" model="ir.ui.view">
+        <field name="name">mitrasystem.project.report.list</field>
+        <field name="model">mitrasystem.project.report</field>
+        <field name="arch" type="xml">
+            <list string="Laporan Proyek">
+                <field name="name"/>
+                <field name="type"/>
+                <field name="project_id"/>
+                <field name="period"/>
+                <field name="created_by"/>
+                <field name="created_date"/>
+                <field name="format"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_project_report" model="ir.actions.act_window">
+        <field name="name">Laporan Proyek</field>
+        <field name="res_model">mitrasystem.project.report</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_project_report" name="Laporan Proyek" parent="menu_mitrasystem_root" sequence="50" action="action_project_report"/>
+</odoo>
