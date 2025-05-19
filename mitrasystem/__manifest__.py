@@ -14,6 +14,7 @@
         'views/project_evaluation_views.xml',
         'views/project_complaint_views.xml',
         'data/sequence.xml',
+        'security/groups.xml',
         'security/ir.model.access.csv',
     ],
     'installable': True,

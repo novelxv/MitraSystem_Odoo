@@ -1,0 +1,25 @@
+<odoo>
+  <data noupdate="1">
+    
+    <!-- Admin Sistem: Full akses semua -->
+    <record id="group_admin_sistem" model="res.groups">
+      <field name="name">Admin Sistem</field>
+    </record>
+
+    <!-- Manajemen: Evaluasi & Laporan -->
+    <record id="group_manajemen" model="res.groups">
+      <field name="name">Manajemen</field>
+    </record>
+
+    <!-- Manajemen Senior: View-only staf & laporan -->
+    <record id="group_manajemen_senior" model="res.groups">
+      <field name="name">Manajemen Senior</field>
+    </record>
+
+    <!-- PIC Proyek: Lihat proyek & jadwalnya -->
+    <record id="group_pic_proyek" model="res.groups">
+      <field name="name">PIC Proyek</field>
+    </record>
+
+  </data>
+</odoo>
