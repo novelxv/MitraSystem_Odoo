@@ -1,0 +1,345 @@
+/* MitraSystem Custom Styles */
+
+/* Dashboard Cards */
+.border-left-primary {
+    border-left: 0.25rem solid #4e73df !important;
+}
+
+.border-left-success {
+    border-left: 0.25rem solid #1cc88a !important;
+}
+
+.border-left-info {
+    border-left: 0.25rem solid #36b9cc !important;
+}
+
+.border-left-warning {
+    border-left: 0.25rem solid #f6c23e !important;
+}
+
+.border-left-danger {
+    border-left: 0.25rem solid #e74a3b !important;
+}
+
+/* Text Colors */
+.text-primary {
+    color: #4e73df !important;
+}
+
+.text-success {
+    color: #1cc88a !important;
+}
+
+.text-info {
+    color: #36b9cc !important;
+}
+
+.text-warning {
+    color: #f6c23e !important;
+}
+
+.text-danger {
+    color: #e74a3b !important;
+}
+
+/* Background Colors */
+.bg-primary {
+    background-color: #4e73df !important;
+}
+
+.bg-success {
+    background-color: #1cc88a !important;
+}
+
+.bg-info {
+    background-color: #36b9cc !important;
+}
+
+.bg-warning {
+    background-color: #f6c23e !important;
+}
+
+.bg-danger {
+    background-color: #e74a3b !important;
+}
+
+/* Card Styles */
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem;
+}
+
+/* Chart Containers */
+.chart-area {
+    position: relative;
+    height: 20rem;
+    width: 100%;
+}
+
+.chart-pie {
+    position: relative;
+    height: 15rem;
+    width: 100%;
+}
+
+/* Progress Bar */
+.progress {
+    height: 0.5rem;
+    overflow: hidden;
+    font-size: 0.75rem;
+    background-color: #eaecf4;
+    border-radius: 0.35rem;
+}
+
+.progress-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #4e73df;
+    transition: width 0.6s ease;
+}
+
+/* Badge Colors */
+.badge-primary {
+    color: #fff;
+    background-color: #4e73df;
+}
+
+.badge-success {
+    color: #fff;
+    background-color: #1cc88a;
+}
+
+.badge-info {
+    color: #fff;
+    background-color: #36b9cc;
+}
+
+.badge-warning {
+    color: #fff;
+    background-color: #f6c23e;
+}
+
+.badge-danger {
+    color: #fff;
+    background-color: #e74a3b;
+}
+
+.badge-secondary {
+    color: #fff;
+    background-color: #858796;
+}
+
+/* Table Styles */
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #e3e6f0;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #e3e6f0;
+}
+
+.table-bordered {
+    border: 1px solid #e3e6f0;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #e3e6f0;
+}
+
+/* Custom Styles for Kanban View */
+.o_kanban_view.o_kanban_ungrouped .o_kanban_record {
+    border-left: 3px solid #4e73df;
+}
+
+.o_kanban_view.o_kanban_ungrouped .o_kanban_record.o_kanban_record_success {
+    border-left: 3px solid #1cc88a;
+}
+
+.o_kanban_view.o_kanban_ungrouped .o_kanban_record.o_kanban_record_warning {
+    border-left: 3px solid #f6c23e;
+}
+
+.o_kanban_view.o_kanban_ungrouped .o_kanban_record.o_kanban_record_danger {
+    border-left: 3px solid #e74a3b;
+}
+
+/* Custom Styles for Form View */
+.o_form_view .o_form_sheet_bg {
+    background-color: #f8f9fc;
+}
+
+.o_form_view .o_form_sheet {
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+.o_form_view .o_form_statusbar {
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+/* Custom Styles for List View */
+.o_list_view .o_list_table {
+    border: 1px solid #e3e6f0;
+}
+
+.o_list_view .o_list_table thead {
+    background-color: #f8f9fc;
+}
+
+.o_list_view .o_list_table tbody tr:hover {
+    background-color: #f8f9fc;
+}
+
+/* Custom Styles for Search View */
+.o_searchview {
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+}
+
+.o_searchview .o_searchview_input {
+    border: none;
+}
+
+/* Custom Styles for Buttons */
+.btn-primary {
+    color: #fff;
+    background-color: #4e73df;
+    border-color: #4e73df;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #2e59d9;
+    border-color: #2653d4;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #1cc88a;
+    border-color: #1cc88a;
+}
+
+.btn-success:hover {
+    color: #fff;
+    background-color: #17a673;
+    border-color: #169b6b;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #36b9cc;
+    border-color: #36b9cc;
+}
+
+.btn-info:hover {
+    color: #fff;
+    background-color: #2c9faf;
+    border-color: #2a96a5;
+}
+
+.btn-warning {
+    color: #fff;
+    background-color: #f6c23e;
+    border-color: #f6c23e;
+}
+
+.btn-warning:hover {
+    color: #fff;
+    background-color: #f4b619;
+    border-color: #f4b30d;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #e74a3b;
+    border-color: #e74a3b;
+}
+
+.btn-danger:hover {
+    color: #fff;
+    background-color: #e02d1b;
+    border-color: #d52a1a;
+}
+
+/* Custom Styles for Sidebar */
+.o_main_navbar {
+    background-color: #4e73df;
+}
+
+.o_main_navbar .o_menu_brand {
+    color: #fff;
+}
+
+.o_main_navbar .o_menu_sections,
+.o_main_navbar .o_menu_systray {
+    color: #fff;
+}
+
+.o_main_navbar .dropdown-menu {
+    background-color: #fff;
+}
+
+.o_main_navbar .dropdown-item {
+    color: #3a3b45;
+}
+
+.o_main_navbar .dropdown-item:hover {
+    background-color: #f8f9fc;
+    color: #3a3b45;
+}
+
+/* Custom Styles for Dashboard */
+.o_dashboard {
+    background-color: #f8f9fc;
+}
+
+.o_dashboard .o_dashboard_graph {
+    background-color: #fff;
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
