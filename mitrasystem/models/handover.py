@@ -25,3 +25,19 @@ class MitraSystemHandover(models.Model):
         if vals.get('name', 'New') == 'New':
             vals['name'] = self.env['ir.sequence'].next_by_code('mitrasystem.handover') or 'New'
         return super().create(vals)
+    
+    @api.model
+    def _search_domain_user(self):
+        if self.env.user.has_group('mitrasystem.group_admin_sistem'):
+            return []  # Admin bisa lihat semua
+        else:
+            employee = self.env['mitrasystem.staff'].search([('user_id', '=', self.env.uid)], limit=1)
+            return ['|',
+                    ('from_staff_id', '=', employee.id),
+                    ('to_staff_id', '=', employee.id)]
+
+    @api.model
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        domain = self._search_domain_user()
+        args = args + domain
+        return super().search(args, offset=offset, limit=limit, order=order, count=count)

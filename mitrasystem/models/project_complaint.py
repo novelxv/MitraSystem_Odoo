@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class ProjectComplaint(models.Model):
     _name = 'mitrasystem.project.complaint'
@@ -15,3 +15,15 @@ class ProjectComplaint(models.Model):
         ('in_progress', 'Dalam Penanganan'),
         ('done', 'Selesai'),
     ], string='Status', default='pending')
+
+    @api.model
+    def _search_domain_user(self):
+        if self.env.user.has_group('mitrasystem.group_admin_sistem'):
+            return []
+        else:
+            return [('pic_id', '=', self.env.uid)]
+
+    @api.model
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        args += self._search_domain_user()
+        return super().search(args, offset=offset, limit=limit, order=order, count=count)

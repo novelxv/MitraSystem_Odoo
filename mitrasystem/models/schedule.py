@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class ProjectSchedule(models.Model):
     _name = 'mitrasystem.schedule'
@@ -10,3 +10,10 @@ class ProjectSchedule(models.Model):
     assigned_to = fields.Many2one('res.users', string='Dikerjakan Oleh')
     start_date = fields.Date(string='Tanggal Mulai')
     end_date = fields.Date(string='Tanggal Selesai')
+
+    @api.model
+    def _search(self, domain, offset=0, limit=None, order=None, count=False):
+        user = self.env.user
+        if user.has_group('mitrasystem.group_pic_proyek'):
+            domain = ['|', ('assigned_to', '=', user.id), ('assigned_to', '=', False)] + domain
+        return super(ProjectSchedule, self).search(domain, offset=offset, limit=limit, order=order, count=count)

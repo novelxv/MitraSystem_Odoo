@@ -1,7 +1,9 @@
 <odoo>
+    <!-- Form view - hanya Admin Sistem -->
     <record id="view_project_report_form" model="ir.ui.view">
         <field name="name">mitrasystem.project.report.form</field>
         <field name="model">mitrasystem.project.report</field>
+        <field name="groups_id" eval="[(4, ref('mitrasystem.group_admin_sistem'))]"/>
         <field name="arch" type="xml">
             <form string="Laporan Proyek">
                 <sheet>
@@ -20,6 +22,7 @@
         </field>
     </record>
 
+    <!-- List view - semua bisa lihat -->
     <record id="view_project_report_list" model="ir.ui.view">
         <field name="name">mitrasystem.project.report.list</field>
         <field name="model">mitrasystem.project.report</field>
@@ -42,5 +45,8 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="menu_project_report" name="Laporan Proyek" parent="menu_mitrasystem_root" sequence="50" action="action_project_report"/>
+    <menuitem id="menu_project_report" name="Laporan Proyek"
+              parent="menu_mitrasystem_root"
+              action="action_project_report"
+              sequence="50"/>
 </odoo>

@@ -1,4 +1,5 @@
 <odoo>
+    <!-- FORM VIEW: hanya Admin, Manajemen, Manajemen Senior -->
     <record id="view_project_evaluation_form" model="ir.ui.view">
         <field name="name">mitrasystem.project.evaluation.form</field>
         <field name="model">mitrasystem.project.evaluation</field>
@@ -29,13 +30,15 @@
                 </sheet>
             </form>
         </field>
+        <field name="groups_id" eval="[(4, ref('mitrasystem.group_admin_sistem')), (4, ref('mitrasystem.group_manajemen')), (4, ref('mitrasystem.group_manajemen_senior'))]"/>
     </record>
 
+    <!-- LIST VIEW: bisa diakses semua (Admin, Manajemen, Senior, PIC) -->
     <record id="view_project_evaluation_list" model="ir.ui.view">
         <field name="name">mitrasystem.project.evaluation.list</field>
         <field name="model">mitrasystem.project.evaluation</field>
         <field name="arch" type="xml">
-            <list>
+            <list string="Evaluasi Proyek">
                 <field name="project_id"/>
                 <field name="status"/>
                 <field name="completion"/>
@@ -48,11 +51,16 @@
         </field>
     </record>
 
+    <!-- ACTION -->
     <record id="action_project_evaluation" model="ir.actions.act_window">
         <field name="name">Evaluasi Proyek</field>
         <field name="res_model">mitrasystem.project.evaluation</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="menu_project_evaluation" name="Evaluasi Proyek" parent="menu_mitrasystem_root" sequence="60" action="action_project_evaluation"/>
+    <!-- MENU -->
+    <menuitem id="menu_project_evaluation" name="Evaluasi Proyek"
+              parent="menu_mitrasystem_root"
+              action="action_project_evaluation"
+              sequence="60"/>
 </odoo>
