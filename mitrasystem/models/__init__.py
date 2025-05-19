@@ -6,3 +6,6 @@ from . import schedule
 from . import handover
 from . import staff
 from . import project_report
+from . import project_evaluation
+from . import project_issue
+from . import project_complaint

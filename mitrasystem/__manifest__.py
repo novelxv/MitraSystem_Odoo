@@ -11,6 +11,8 @@
         'views/handover_views.xml',
         'views/staff_views.xml',
         'views/project_report_views.xml',
+        'views/project_evaluation_views.xml',
+        'views/project_complaint_views.xml',
         'data/sequence.xml',
         'security/ir.model.access.csv',
     ],

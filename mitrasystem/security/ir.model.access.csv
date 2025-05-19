@@ -6,3 +6,6 @@ access_mitrasystem_staff_admin,mitrasystem.staff,model_mitrasystem_staff,base.gr
 access_mitrasystem_staff_readonly,mitrasystem.staff,model_mitrasystem_staff,base.group_public,1,0,0,0
 access_mitrasystem_project_report_admin,mitrasystem.project.report,model_mitrasystem_project_report,base.group_user,1,1,1,1
 access_mitrasystem_project_report_readonly,mitrasystem.project.report,model_mitrasystem_project_report,base.group_public,1,0,0,0
+access_mitrasystem_project_evaluation,mitrasystem.project.evaluation,model_mitrasystem_project_evaluation,base.group_user,1,1,1,1
+access_mitrasystem_project_issue,mitrasystem.project.issue,model_mitrasystem_project_issue,base.group_user,1,1,1,1
+access_mitrasystem_project_complaint,mitrasystem.project.complaint,model_mitrasystem_project_complaint,base.group_user,1,1,1,1
