@@ -4,3 +4,4 @@ from . import models
 from . import project
 from . import schedule
 from . import handover
+from . import staff

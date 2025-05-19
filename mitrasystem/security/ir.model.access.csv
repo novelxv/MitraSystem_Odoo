@@ -2,3 +2,5 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_mitrasystem_project,mitrasystem.project,model_mitrasystem_project,base.group_user,1,1,1,1
 access_mitrasystem_schedule,mitrasystem.schedule,model_mitrasystem_schedule,base.group_user,1,1,1,1
 access_mitrasystem_handover,mitrasystem.handover,model_mitrasystem_handover,base.group_user,1,1,1,1
+access_mitrasystem_staff_admin,mitrasystem.staff,model_mitrasystem_staff,base.group_user,1,1,1,1
+access_mitrasystem_staff_readonly,mitrasystem.staff,model_mitrasystem_staff,base.group_public,1,0,0,0
