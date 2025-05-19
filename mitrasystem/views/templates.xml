@@ -1,24 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-<!--
-        <template id="listing">
-          <ul>
-            <li t-foreach="objects" t-as="object">
-              <a t-attf-href="#{ root }/objects/#{ object.id }">
-                <t t-esc="object.display_name"/>
-              </a>
-            </li>
-          </ul>
-        </template>
-        <template id="object">
-          <h1><t t-esc="object.display_name"/></h1>
-          <dl>
-            <t t-foreach="object._fields" t-as="field">
-              <dt><t t-esc="field"/></dt>
-              <dd><t t-esc="object[field]"/></dd>
+    <template id="dashboard_template" name="MitraSystem Dashboard">
+        <t t-call="web.layout">
+            <t t-set="title">MitraSystem Dashboard</t>
+            <t t-set="head">
+                <link rel="stylesheet" href="/mitrasystem/static/src/css/style.css"/>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script src="/mitrasystem/static/src/js/dashboard.js"></script>
             </t>
-          </dl>
-        </template>
--->
-    </data>
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="mb-4">Dashboard MitraSystem</h1>
+                    </div>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            Total Proyek</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><t t-esc="len(projects)"/></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fa fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Proyek Aktif</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><t t-esc="len(active_projects)"/></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fa fa-tasks fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            Proyek Selesai</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><t t-esc="len(completed_projects)"/></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fa fa-check-circle fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            Proyek Terlambat</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><t t-esc="len(overdue_projects)"/></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fa fa-exclamation-triangle fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Row -->
+                <div class="row">
+                    <div class="col-xl-8 col-lg-7">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Progress Proyek</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area">
+                                    <canvas id="projectProgressChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-4 col-lg-5">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Status Proyek</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-pie pt-4 pb-2">
+                                    <canvas id="projectStatusChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Content Row -->
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Aktivitas Terbaru</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Proyek</th>
+                                                <th>Karyawan</th>
+                                                <th>Deskripsi</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="activities" t-as="activity">
+                                                <tr>
+                                                    <td><t t-esc="activity.date"/></td>
+                                                    <td><t t-esc="activity.project_id.name"/></td>
+                                                    <td><t t-esc="activity.employee_id.name"/></td>
+                                                    <td><t t-esc="activity.description"/></td>
+                                                    <td>
+                                                        <span t-attf-class="badge badge-#{activity.state == 'completed' and 'success' or activity.state == 'blocked' and 'danger' or 'primary'}">
+                                                            <t t-esc="dict(activity._fields['state'].selection).get(activity.state)"/>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 mb-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Deadline Mendatang</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Proyek</th>
+                                                <th>Klien</th>
+                                                <th>Deadline</th>
+                                                <th>Sisa Hari</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="upcoming_deadlines" t-as="project">
+                                                <tr>
+                                                    <td><t t-esc="project.name"/></td>
+                                                    <td><t t-esc="project.client_id.name"/></td>
+                                                    <td><t t-esc="project.end_date"/></td>
+                                                    <td>
+                                                        <span t-attf-class="badge badge-#{project.days_left &lt; 7 and 'warning' or 'info'}">
+                                                            <t t-esc="project.days_left"/> hari</span>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="project_detail_template" name="MitraSystem Project Detail">
+        <t t-call="web.layout">
+            <t t-set="title">Detail Proyek - <t t-esc="project.name"/></t>
+            <t t-set="head">
+                <link rel="stylesheet" href="/mitrasystem/static/src/css/style.css"/>
+            </t>
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/mitrasystem/dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><t t-esc="project.name"/></li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h1><t t-esc="project.name"/></h1>
+                            <span t-attf-class="badge badge-#{project.state == 'in_progress' and 'primary' or project.state == 'completed' and 'success' or project.state == 'on_hold' and 'warning' or 'secondary'}">
+                                <t t-esc="dict(project._fields['state'].selection).get(project.state)"/>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Informasi Proyek</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Kode Proyek:</strong> <t t-esc="project.code"/></p>
+                                        <p><strong>Klien:</strong> <t t-esc="project.client_id.name"/></p>
+                                        <p><strong>PIC:</strong> <t t-esc="project.pic_id.name"/></p>
+                                        <p><strong>Tanggal Mulai:</strong> <t t-esc="project.start_date"/></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Deadline:</strong> <t t-esc="project.end_date"/></p>
+                                        <p><strong>Sisa Hari:</strong> <t t-esc="project.days_left"/></p>
+                                        <p><strong>Anggaran Direncanakan:</strong> <t t-esc="project.budget_planned" t-options='{"widget": "monetary"}'/></p>
+                                        <p><strong>Anggaran Aktual:</strong> <t t-esc="project.budget_actual" t-options='{"widget": "monetary"}'/></p>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <p><strong>Deskripsi:</strong></p>
+                                    <p><t t-esc="project.description"/></p>
+                                </div>
+                                <div class="mt-3">
+                                    <p><strong>Progress:</strong> <t t-esc="project.progress"/>%</p>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" t-att-style="'width: ' + str(project.progress) + '%'" t-att-aria-valuenow="project.progress" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Tim Proyek</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama</th>
+                                                <th>Peran</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><t t-esc="project.pic_id.name"/></td>
+                                                <td>PIC Proyek</td>
+                                            </tr>
+                                            <t t-foreach="project.team_member_ids" t-as="member">
+                                                <tr>
+                                                    <td><t t-esc="member.name"/></td>
+                                                    <td>Anggota Tim</td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Tugas</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama Tugas</th>
+                                                <th>Penanggung Jawab</th>
+                                                <th>Deadline</th>
+                                                <th>Status</th>
+                                                <th>Progress</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="project.task_ids" t-as="task">
+                                                <tr>
+                                                    <td><t t-esc="task.name"/></td>
+                                                    <td><t t-esc="task.assignee_id.name"/></td>
+                                                    <td><t t-esc="task.deadline"/></td>
+                                                    <td>
+                                                        <span t-attf-class="badge badge-#{task.state == 'completed' and 'success' or task.state == 'blocked' and 'danger' or task.state == 'in_progress' and 'primary' or 'secondary'}">
+                                                            <t t-esc="dict(task._fields['state'].selection).get(task.state)"/>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="progress">
+                                                            <div class="progress-bar" role="progressbar" t-att-style="'width: ' + str(task.progress) + '%'" t-att-aria-valuenow="task.progress" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Update Progress</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Karyawan</th>
+                                                <th>Deskripsi</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="project.progress_update_ids" t-as="update">
+                                                <tr>
+                                                    <td><t t-esc="update.date"/></td>
+                                                    <td><t t-esc="update.employee_id.name"/></td>
+                                                    <td><t t-esc="update.description"/></td>
+                                                    <td>
+                                                        <span t-attf-class="badge badge-#{update.state == 'completed' and 'success' or update.state == 'blocked' and 'danger' or 'primary'}">
+                                                            <t t-esc="dict(update._fields['state'].selection).get(update.state)"/>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
 </odoo>
