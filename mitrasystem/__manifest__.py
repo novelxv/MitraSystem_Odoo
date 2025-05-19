@@ -6,8 +6,9 @@
     'author': 'MitraSystem Team',
     'depends': ['base'],
     'data': [
-       'views/project_views.xml',
-       'security/ir.model.access.csv',
+        'views/project_views.xml',
+        'views/schedule_views.xml',
+        'security/ir.model.access.csv',
     ],
     'installable': True,
     'application': True,
