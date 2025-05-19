@@ -1,0 +1,44 @@
+<odoo>
+    <record id="view_handover_form" model="ir.ui.view">
+        <field name="name">mitrasystem.handover.form</field>
+        <field name="model">mitrasystem.handover</field>
+        <field name="arch" type="xml">
+            <form string="Handover Tugas">
+                <group>
+                    <field name="name" readonly="1"/>
+                    <field name="project_id"/>
+                    <field name="task"/>
+                    <field name="from_staff_id"/>
+                    <field name="to_staff_id"/>
+                    <field name="date"/>
+                    <field name="status"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_handover_list" model="ir.ui.view">
+        <field name="name">mitrasystem.handover.list</field>
+        <field name="model">mitrasystem.handover</field>
+        <field name="arch" type="xml">
+            <list string="Daftar Handover">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="task"/>
+                <field name="from_staff_id"/>
+                <field name="to_staff_id"/>
+                <field name="date"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_handover" model="ir.actions.act_window">
+        <field name="name">Handover Tugas</field>
+        <field name="res_model">mitrasystem.handover</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_handover_root" name="Handover Tugas" parent="menu_mitrasystem_root"
+              action="action_handover" sequence="30"/>
+</odoo>
