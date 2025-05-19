@@ -18,7 +18,7 @@
     """,
     'author': 'MitraSystem Team',
     'category': 'Project Management',
-    'depends': ['base', 'mail', 'project', 'hr', 'web_gantt', 'web_dashboard'],
+    'depends': ['base', 'mail', 'project', 'hr'],
     'data': [
         'security/mitrasystem_security.xml',
         'security/ir.model.access.csv',
@@ -43,6 +43,9 @@
         'web.assets_backend': [
             'mitrasystem/static/src/css/style.css',
             'mitrasystem/static/src/js/dashboard.js',
+            'mitrasystem/static/lib/dhtmlxgantt/dhtmlxgantt.css',
+            'mitrasystem/static/lib/dhtmlxgantt/dhtmlxgantt.js',
+            'mitrasystem/static/src/js/gantt_view.js',
         ],
     },
     'license': 'LGPL-3',

@@ -375,4 +375,18 @@
             </div>
         </t>
     </template>
+
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/mitrasystem/static/lib/dhtmlxgantt/dhtmlxgantt.css"/>
+            <script type="text/javascript" src="/mitrasystem/static/lib/dhtmlxgantt/dhtmlxgantt.js"></script>
+            <script type="text/javascript" src="/mitrasystem/static/src/js/gantt_view.js"></script>
+        </xpath>
+    </template>
+
+    <template id="project_gantt_view" name="Project Gantt View">
+        <div class="o_gantt_view">
+            <div id="gantt_here" style="width:100%; height:500px;"></div>
+        </div>
+    </template>
 </odoo>

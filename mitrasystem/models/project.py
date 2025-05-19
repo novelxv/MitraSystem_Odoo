@@ -3,6 +3,18 @@ from odoo.exceptions import ValidationError
 from datetime import timedelta
 
 class MitraProject(models.Model):
+    task_count = fields.Integer(string='Jumlah Tugas', compute='_compute_task_count', store=True)
+    document_count = fields.Integer(string='Jumlah Dokumen', compute='_compute_document_count', store=True)
+
+    @api.depends('task_ids')
+    def _compute_task_count(self):
+        for rec in self:
+            rec.task_count = len(rec.task_ids)
+
+    @api.depends('document_ids')
+    def _compute_document_count(self):
+        for rec in self:
+            rec.document_count = len(rec.document_ids)
     _name = 'mitra.project'
     _description = 'Mitra Project'
     _inherit = ['mail.thread', 'mail.activity.mixin']

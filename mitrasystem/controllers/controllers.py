@@ -100,3 +100,45 @@ class MitraSystem(http.Controller):
             'success': True,
             'id': progress.id
         }
+    
+    @http.route('/mitrasystem/gantt_data', type='json', auth='user')
+    def get_gantt_data(self, model, **kw):
+        if model == 'mitra.project':
+            projects = request.env['mitra.project'].search([])
+            result = []
+            
+            for project in projects:
+                project_data = {
+                    'id': project.id,
+                    'name': project.name,
+                    'start_date': project.start_date,
+                    'end_date': project.end_date,
+                    'progress': project.progress,
+                    'task_ids': []
+                }
+                
+                for task in project.task_ids:
+                    task_data = {
+                        'id': task.id,
+                        'name': task.name,
+                        'start_date': task.start_date,
+                        'end_date': task.deadline,
+                        'progress': task.progress,
+                        'dependency_ids': []
+                    }
+                    
+                    if hasattr(task, 'dependency_ids'):
+                        for dep in task.dependency_ids:
+                            task_data['dependency_ids'].append({
+                                'id': dep.id,
+                                'task_from_id': dep.task_from_id.id,
+                                'task_to_id': dep.task_to_id.id
+                            })
+                    
+                    project_data['task_ids'].append(task_data)
+                
+                result.append(project_data)
+            
+            return result
+        
+        return []

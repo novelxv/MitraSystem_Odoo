@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="action_mitra_project_task" model="ir.actions.act_window">
+        <field name="name">Tugas</field>
+        <field name="res_model">mitra.project.task</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_project_id': active_id}</field>
+        <field name="domain">[('project_id', '=', active_id)]</field>
+    </record>
+
+    <record id="action_mitra_project_document" model="ir.actions.act_window">
+        <field name="name">Dokumen</field>
+        <field name="res_model">mitra.project.document</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_project_id': active_id}</field>
+        <field name="domain">[('project_id', '=', active_id)]</field>
+    </record>
+
     <!-- Project Form View -->
     <record id="view_mitra_project_form" model="ir.ui.view">
         <field name="name">mitra.project.form</field>
@@ -298,14 +314,6 @@
         </field>
     </record>
 
-    <record id="action_mitra_project_task" model="ir.actions.act_window">
-        <field name="name">Tugas</field>
-        <field name="res_model">mitra.project.task</field>
-        <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_project_id': active_id}</field>
-        <field name="domain">[('project_id', '=', active_id)]</field>
-    </record>
-
     <!-- Progress Update Views -->
     <record id="view_mitra_project_progress_form" model="ir.ui.view">
         <field name="name">mitra.project.progress.form</field>
@@ -399,13 +407,5 @@
                 <field name="upload_date"/>
             </tree>
         </field>
-    </record>
-
-    <record id="action_mitra_project_document" model="ir.actions.act_window">
-        <field name="name">Dokumen</field>
-        <field name="res_model">mitra.project.document</field>
-        <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_project_id': active_id}</field>
-        <field name="domain">[('project_id', '=', active_id)]</field>
     </record>
 </odoo>
