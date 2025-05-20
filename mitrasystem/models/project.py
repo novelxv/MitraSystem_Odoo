@@ -15,6 +15,24 @@ class Project(models.Model):
         ('selesai', 'Selesai'),
     ], string='Status', default='aktif')
     progress = fields.Integer(string='Progress (%)')
+    
+    # Relasi dengan jadwal
+    schedule_count = fields.Integer(string='Jumlah Tugas', compute='_compute_schedule_count')
+    
+    def _compute_schedule_count(self):
+        for record in self:
+            record.schedule_count = self.env['mitrasystem.schedule'].search_count([('project_id', '=', record.id)])
+    
+    def action_open_schedule(self):
+        return {
+            'name': f'Jadwal Proyek: {self.name}',
+            'type': 'ir.actions.act_window',
+            'res_model': 'mitrasystem.schedule',
+            'view_mode': 'kanban,calendar,list,form',
+            'domain': [('project_id', '=', self.id)],
+            'context': {'default_project_id': self.id},
+            'target': 'current',
+        }
 
     @api.model
     def _search_domain_for_user(self):

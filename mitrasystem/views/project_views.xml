@@ -5,14 +5,27 @@
         <field name="groups_id" eval="[(4, ref('mitrasystem.group_admin_sistem'))]"/>
         <field name="arch" type="xml">
             <form string="Proyek">
-                <group>
-                    <field name="name"/>
-                    <field name="client"/>
-                    <field name="pic_id"/>
-                    <field name="deadline"/>
-                    <field name="status"/>
-                    <field name="progress"/>
-                </group>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_schedule" type="object" class="oe_stat_button" icon="fa-tasks">
+                            <field name="schedule_count" string="Tugas" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Nama Proyek"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="client"/>
+                            <field name="pic_id"/>
+                        </group>
+                        <group>
+                            <field name="deadline"/>
+                            <field name="status"/>
+                            <field name="progress" widget="progressbar"/>
+                        </group>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>
