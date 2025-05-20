@@ -12,8 +12,8 @@ class ProjectSchedule(models.Model):
     end_date = fields.Date(string='Tanggal Selesai')
 
     @api.model
-    def _search(self, domain, offset=0, limit=None, order=None, count=False):
+    def _search(self, domain, offset=0, limit=None, order=None):
         user = self.env.user
         if user.has_group('mitrasystem.group_pic_proyek'):
             domain = ['|', ('assigned_to', '=', user.id), ('assigned_to', '=', False)] + domain
-        return super(ProjectSchedule, self).search(domain, offset=offset, limit=limit, order=order, count=count)
+        return super(ProjectSchedule, self).search(domain, offset=offset, limit=limit, order=order)

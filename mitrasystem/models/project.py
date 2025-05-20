@@ -17,11 +17,11 @@ class Project(models.Model):
     progress = fields.Integer(string='Progress (%)')
 
     @api.model
-    def search(self, domain=None, offset=0, limit=None, order=None, count=False):
+    def search(self, domain=None, offset=0, limit=None, order=None):
         domain = domain or []
         user = self.env.user
 
         if user.has_group('mitrasystem.group_pic_proyek'):
             domain = ['|', ('pic_id', '=', user.id), ('pic_id', '=', False)] + domain
 
-        return super().search(domain, offset=offset, limit=limit, order=order, count=count)
+        return super().search(domain, offset=offset, limit=limit, order=order)

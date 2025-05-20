@@ -24,6 +24,6 @@ class ProjectComplaint(models.Model):
             return [('pic_id', '=', self.env.uid)]
 
     @api.model
-    def search(self, args, offset=0, limit=None, order=None, count=False):
+    def search(self, args, offset=0, limit=None, order=None):
         args += self._search_domain_user()
-        return super().search(args, offset=offset, limit=limit, order=order, count=count)
+        return super().search(args, offset=offset, limit=limit, order=order)

@@ -6,6 +6,7 @@
     'author': 'MitraSystem Team',
     'depends': ['base'],
     'data': [
+        'views/dashboard_views.xml',
         'views/project_views.xml',
         'views/schedule_views.xml',
         'views/handover_views.xml',

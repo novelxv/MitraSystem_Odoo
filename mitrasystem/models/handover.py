@@ -37,7 +37,7 @@ class MitraSystemHandover(models.Model):
                     ('to_staff_id', '=', employee.id)]
 
     @api.model
-    def search(self, args, offset=0, limit=None, order=None, count=False):
+    def search(self, args, offset=0, limit=None, order=None):
         domain = self._search_domain_user()
         args = args + domain
-        return super().search(args, offset=offset, limit=limit, order=order, count=count)
+        return super().search(args, offset=offset, limit=limit, order=order)
