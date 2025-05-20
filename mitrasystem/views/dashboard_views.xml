@@ -2,8 +2,13 @@
     <record id="view_dashboard_form" model="ir.ui.view">
         <field name="name">mitrasystem.dashboard.form</field>
         <field name="model">mitrasystem.dashboard</field>
+        <field name="groups_id" eval="[(4, ref('mitrasystem.group_admin_sistem')), (4, ref('mitrasystem.group_manajemen_senior'))]"/>
         <field name="arch" type="xml">
             <form string="Dashboard MitraSystem" create="false" edit="false">
+                <header>
+                    <button name="view_nearest_deadline_projects" string="Lihat Proyek Deadline Terdekat" type="object" class="oe_highlight"/>
+                    <button name="view_attention_projects" string="Lihat Proyek Perlu Perhatian" type="object" class="oe_highlight"/>
+                </header>
                 <group>
                     <group>
                         <field name="total_project" readonly="1"/>
@@ -12,6 +17,9 @@
                         <field name="attention_project" readonly="1"/>
                     </group>
                 </group>
+                <div class="alert alert-info" role="alert">
+                    <p>Klik tombol di atas untuk melihat detail proyek.</p>
+                </div>
             </form>
         </field>
     </record>
@@ -21,6 +29,7 @@
         <field name="res_model">mitrasystem.dashboard</field>
         <field name="view_mode">form</field>
         <field name="target">inline</field>
+        <field name="groups_id" eval="[(4, ref('mitrasystem.group_admin_sistem')), (4, ref('mitrasystem.group_manajemen_senior'))]"/>
     </record>
 
     <menuitem id="menu_mitrasystem_root" name="MitraSystem"/>

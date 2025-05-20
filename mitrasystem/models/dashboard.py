@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from datetime import datetime, timedelta
 
 class MitraSystemDashboard(models.Model):
     _name = 'mitrasystem.dashboard'
@@ -13,13 +14,38 @@ class MitraSystemDashboard(models.Model):
 
     def _compute_dashboard(self):
         Project = self.env['mitrasystem.project']
-        self.total_project = Project.search_count([])
-        self.active_project = Project.search_count([('status', '=', 'aktif')])
-        self.finished_project = Project.search_count([('status', '=', 'selesai')])
-        self.attention_project = Project.search_count([('progress', '<', 50)])
+        for record in self:
+            record.total_project = Project.search_count([])
+            record.active_project = Project.search_count([('status', '=', 'aktif')])
+            record.finished_project = Project.search_count([('status', '=', 'selesai')])
+            record.attention_project = Project.search_count(['|', ('progress', '<', 50), ('deadline', '<', (datetime.today() + timedelta(days=30)).strftime('%Y-%m-%d'))])
     
     def name_get(self):
         return [(record.id, "Dashboard") for record in self]
+
+    def view_nearest_deadline_projects(self):
+        return {
+            'name': 'Proyek Aktif dengan Deadline Terdekat',
+            'type': 'ir.actions.act_window',
+            'res_model': 'mitrasystem.project',
+            'view_mode': 'list,form',
+            'domain': [('status', '=', 'aktif')],
+            'context': {'search_default_deadline': 1},
+            'limit': 5,
+            'target': 'current',
+        }
+    
+    def view_attention_projects(self):
+        today = datetime.today()
+        deadline_date = (today + timedelta(days=30)).strftime('%Y-%m-%d')
+        return {
+            'name': 'Proyek Perlu Perhatian',
+            'type': 'ir.actions.act_window',
+            'res_model': 'mitrasystem.project',
+            'view_mode': 'list,form',
+            'domain': ['|', ('progress', '<', 50), ('deadline', '<', deadline_date)],
+            'target': 'current',
+        }
 
     @api.model
     def default_get(self, fields):

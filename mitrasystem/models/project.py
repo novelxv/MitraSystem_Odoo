@@ -17,11 +17,13 @@ class Project(models.Model):
     progress = fields.Integer(string='Progress (%)')
 
     @api.model
+    def _search_domain_for_user(self):
+        if self.env.user.has_group('mitrasystem.group_pic_proyek'):
+            return ['|', ('pic_id', '=', self.env.uid), ('pic_id', '=', False)]
+        return []
+
+    @api.model
     def search(self, domain=None, offset=0, limit=None, order=None):
         domain = domain or []
-        user = self.env.user
-
-        if user.has_group('mitrasystem.group_pic_proyek'):
-            domain = ['|', ('pic_id', '=', user.id), ('pic_id', '=', False)] + domain
-
-        return super().search(domain, offset=offset, limit=limit, order=order)
+        domain = self._search_domain_for_user() + domain
+        return super(Project, self).search(domain, offset=offset, limit=limit, order=order)
