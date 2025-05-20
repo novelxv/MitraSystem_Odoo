@@ -23,3 +23,6 @@ access_evaluation_pic,mitrasystem.project.evaluation,model_mitrasystem_project_e
 
 access_complaint_admin,mitrasystem.project.complaint,model_mitrasystem_project_complaint,mitrasystem.group_admin_sistem,1,1,1,1
 access_complaint_pic,mitrasystem.project.complaint,model_mitrasystem_project_complaint,mitrasystem.group_pic_proyek,1,0,0,0
+
+access_dashboard_admin,mitrasystem.dashboard,model_mitrasystem_dashboard,mitrasystem.group_admin_sistem,1,1,1,1
+access_dashboard_senior,mitrasystem.dashboard,model_mitrasystem_dashboard,mitrasystem.group_manajemen_senior,1,0,0,0

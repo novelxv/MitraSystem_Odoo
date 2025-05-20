@@ -9,3 +9,4 @@ from . import project_report
 from . import project_evaluation
 from . import project_issue
 from . import project_complaint
+from . import dashboard

@@ -38,7 +38,5 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="menu_mitrasystem_project" name="Proyek" parent="menu_mitrasystem_root"/>
-    <menuitem id="menu_mitrasystem_project_action" name="Kelola Proyek" parent="menu_mitrasystem_project"
-              action="action_mitrasystem_project"/>
+    <menuitem id="menu_mitrasystem_project" name="Proyek" parent="menu_mitrasystem_root" action="action_mitrasystem_project"/>
 </odoo>
