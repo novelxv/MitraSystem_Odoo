@@ -15,7 +15,12 @@ class ProjectSchedule(models.Model):
     
     # Field untuk tampilan timeline
     duration = fields.Integer(string='Durasi (hari)', compute='_compute_duration', store=True)
-    progress = fields.Integer(string='Progress (%)', default=0)
+    
+    # Progress fields
+    auto_progress = fields.Boolean(string='Progress Otomatis', default=False, 
+                                  help="Jika diaktifkan, progress akan dihitung otomatis berdasarkan tanggal")
+    progress = fields.Integer(string='Progress (%)', default=0, tracking=True)
+    
     color = fields.Integer(string='Warna')
     
     # Fields untuk tampilan kanban visual
@@ -63,13 +68,45 @@ class ProjectSchedule(models.Model):
                     elapsed_days = (today - record.start_date).days
                     progress = min(100, int((elapsed_days / total_days) * 100))
                 record.timeline_position = f'progress-{progress}'
+                
+                # Update progress jika auto_progress aktif
+                if record.auto_progress:
+                    record.progress = progress
     
-    @api.depends('start_date', 'end_date')
+    @api.depends('start_date', 'end_date', 'state')
     def _compute_is_current(self):
         today = fields.Date.today()
         for record in self:
             record.is_current = record.start_date and record.end_date and record.start_date <= today <= record.end_date
             record.is_overdue = record.end_date and record.end_date < today and record.state != 'done'
+    
+    @api.onchange('state')
+    def _onchange_state(self):
+        for record in self:
+            if record.state == 'done':
+                record.progress = 100
+            elif record.state == 'pending' and record.progress == 0:
+                continue
+            elif record.state == 'pending':
+                record.progress = 0
+
+    def write(self, vals):
+        result = super(ProjectSchedule, self).write(vals)
+        # Update project progress when task progress changes
+        if 'progress' in vals or 'state' in vals:
+            projects_to_update = self.mapped('project_id')
+            for project in projects_to_update:
+                project._compute_progress_from_tasks()
+        return result
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super(ProjectSchedule, self).create(vals_list)
+        # Update project progress when new task is created
+        projects = records.mapped('project_id')
+        for project in projects:
+            project._compute_progress_from_tasks()
+        return records
 
     @api.model
     def search(self, domain, offset=0, limit=None, order=None):

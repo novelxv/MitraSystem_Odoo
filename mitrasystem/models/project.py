@@ -14,6 +14,10 @@ class Project(models.Model):
         ('tertunda', 'Tertunda'),
         ('selesai', 'Selesai'),
     ], string='Status', default='aktif')
+    
+    # Progress fields
+    auto_progress = fields.Boolean(string='Progress Otomatis dari Tugas', default=True, 
+                                 help="Jika diaktifkan, progress proyek akan dihitung berdasarkan progress tugas-tugas")
     progress = fields.Integer(string='Progress (%)')
     
     # Relasi dengan jadwal
@@ -22,6 +26,28 @@ class Project(models.Model):
     def _compute_schedule_count(self):
         for record in self:
             record.schedule_count = self.env['mitrasystem.schedule'].search_count([('project_id', '=', record.id)])
+    
+    def _compute_progress_from_tasks(self):
+        for project in self:
+            if not project.auto_progress:
+                continue
+                
+            tasks = self.env['mitrasystem.schedule'].search([
+                ('project_id', '=', project.id)
+            ])
+            
+            if not tasks:
+                project.progress = 0
+                continue
+                
+            # Hitung rata-rata progress dari semua tugas
+            total_progress = sum(task.progress for task in tasks)
+            avg_progress = total_progress / len(tasks)
+            project.progress = int(avg_progress)
+            
+            # Update status jika progress 100%
+            if project.progress >= 100:
+                project.status = 'selesai'
     
     def action_open_schedule(self):
         return {
@@ -33,6 +59,10 @@ class Project(models.Model):
             'context': {'default_project_id': self.id},
             'target': 'current',
         }
+    
+    def action_update_progress(self):
+        self._compute_progress_from_tasks()
+        return True
 
     @api.model
     def _search_domain_for_user(self):

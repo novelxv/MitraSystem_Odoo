@@ -5,6 +5,9 @@
         <field name="groups_id" eval="[(4, ref('mitrasystem.group_admin_sistem'))]"/>
         <field name="arch" type="xml">
             <form string="Proyek">
+                <header>
+                    <button name="action_update_progress" string="Perbarui Progress" type="object" class="oe_highlight"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_open_schedule" type="object" class="oe_stat_button" icon="fa-tasks">
@@ -18,11 +21,12 @@
                         <group>
                             <field name="client"/>
                             <field name="pic_id"/>
+                            <field name="deadline"/>
                         </group>
                         <group>
-                            <field name="deadline"/>
                             <field name="status"/>
-                            <field name="progress" widget="progressbar"/>
+                            <field name="auto_progress"/>
+                            <field name="progress" widget="progressbar" readonly="auto_progress"/>
                         </group>
                     </group>
                 </sheet>
