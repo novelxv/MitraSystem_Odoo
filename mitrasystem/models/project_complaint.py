@@ -27,3 +27,9 @@ class ProjectComplaint(models.Model):
     def search(self, args, offset=0, limit=None, order=None):
         args += self._search_domain_user()
         return super().search(args, offset=offset, limit=limit, order=order)
+        
+    @api.model
+    def create(self, vals):
+        if vals.get('name', 'New') == 'New':
+            vals['name'] = self.env['ir.sequence'].next_by_code('mitrasystem.project.complaint') or 'New'
+        return super(ProjectComplaint, self).create(vals)

@@ -17,9 +17,7 @@
             </form>
         </field>
         <field name="groups_id" eval="[(4, ref('mitrasystem.group_admin_sistem'))]"/>
-    </record>
-
-    <!-- LIST VIEW: bisa diakses semua (Admin & PIC Proyek) -->
+    </record>    <!-- LIST VIEW: bisa diakses semua (Admin & PIC Proyek) -->
     <record id="view_project_complaint_list" model="ir.ui.view">
         <field name="name">mitrasystem.project.complaint.list</field>
         <field name="model">mitrasystem.project.complaint</field>
