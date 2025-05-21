@@ -5,13 +5,13 @@
         <field name="model">mitrasystem.staff</field>
         <field name="groups_id" eval="[(4, ref('mitrasystem.group_admin_sistem'))]"/>
         <field name="arch" type="xml">
-            <form string="Data Staf">
-                <sheet>
+            <form string="Data Staf">                <sheet>
                     <group>
                         <field name="name"/>
                         <field name="email"/>
                         <field name="position"/>
                         <field name="department"/>
+                        <field name="user_id"/>
                         <field name="role"/>
                         <field name="status"/>
                     </group>
@@ -26,11 +26,12 @@
         <field name="model">mitrasystem.staff</field>
         <field name="groups_id" eval="[(4, ref('mitrasystem.group_admin_sistem')), (4, ref('mitrasystem.group_manajemen_senior'))]"/>
         <field name="arch" type="xml">
-            <list string="Daftar Staf">
+            <list string="Daftar Staf">                
                 <field name="name"/>
                 <field name="email"/>
                 <field name="position"/>
                 <field name="department"/>
+                <field name="user_id"/>
                 <field name="role"/>
                 <field name="status"/>
             </list>

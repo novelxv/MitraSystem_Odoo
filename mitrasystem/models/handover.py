@@ -8,8 +8,11 @@ class MitraSystemHandover(models.Model):
                        default=lambda self: 'New')
     project_id = fields.Many2one('mitrasystem.project', string='Proyek', required=True)
     task = fields.Char(string='Tugas', required=True)
-    from_staff_id = fields.Many2one('res.users', string='Dari', required=True)
-    to_staff_id = fields.Many2one('res.users', string='Ke', required=True)
+    # Using both users and staff as options
+    from_user_id = fields.Many2one('res.users', string='Dari (User)')
+    from_staff_id = fields.Many2one('mitrasystem.staff', string='Dari (Staf)')
+    to_user_id = fields.Many2one('res.users', string='Ke (User)')
+    to_staff_id = fields.Many2one('mitrasystem.staff', string='Ke (Staf)')
     date = fields.Date(string='Tanggal', required=True)
     status = fields.Selection([
         ('proses', 'Dalam Proses'),
@@ -28,13 +31,26 @@ class MitraSystemHandover(models.Model):
     
     @api.model
     def _search_domain_user(self):
-        if self.env.user.has_group('mitrasystem.group_admin_sistem'):
+        current_user = self.env.user
+        if current_user.has_group('mitrasystem.group_admin_sistem'):
             return []  # Admin bisa lihat semua
         else:
-            employee = self.env['mitrasystem.staff'].search([('user_id', '=', self.env.uid)], limit=1)
-            return ['|',
-                    ('from_staff_id', '=', employee.id),
-                    ('to_staff_id', '=', employee.id)]
+            # Cari staf yang terkait dengan pengguna saat ini
+            employee = self.env['mitrasystem.staff'].search([('user_id', '=', current_user.id)], limit=1)
+            
+            domain = []
+            # Filter berdasarkan user_id jika pengguna bukan staf
+            domain.append('|')
+            domain.append(('from_user_id', '=', current_user.id))
+            domain.append(('to_user_id', '=', current_user.id))
+            
+            # Filter berdasarkan staff_id jika pengguna adalah staf
+            if employee:
+                domain = ['|', '|', '|'] + domain
+                domain.append(('from_staff_id', '=', employee.id))
+                domain.append(('to_staff_id', '=', employee.id))
+                
+            return domain
 
     @api.model
     def search(self, args, offset=0, limit=None, order=None):

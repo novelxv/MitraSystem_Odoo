@@ -9,7 +9,8 @@ class ProjectSchedule(models.Model):
 
     task_name = fields.Char(string='Nama Tugas', required=True)
     project_id = fields.Many2one('mitrasystem.project', string='Proyek', required=True)
-    assigned_to = fields.Many2one('res.users', string='Dikerjakan Oleh')
+    assigned_to = fields.Many2one('res.users', string='Dikerjakan Oleh (User)')
+    assigned_staff_id = fields.Many2one('mitrasystem.staff', string='Dikerjakan Oleh (Staf)')
     start_date = fields.Date(string='Tanggal Mulai', required=True)
     end_date = fields.Date(string='Tanggal Selesai', required=True)
     
@@ -91,7 +92,48 @@ class ProjectSchedule(models.Model):
                 record.progress = 0
 
     def write(self, vals):
+        # Keep track of staff/user assignment changes
+        old_assigned_to = None
+        old_assigned_staff_id = None
+        new_assigned_to = None 
+        new_assigned_staff_id = None
+        
+        if 'assigned_to' in vals and any(self.mapped('assigned_to')):
+            old_assigned_to = self.mapped('assigned_to')
+            new_assigned_to = self.env['res.users'].browse(vals['assigned_to']) if vals['assigned_to'] else False
+        
+        if 'assigned_staff_id' in vals and any(self.mapped('assigned_staff_id')):
+            old_assigned_staff_id = self.mapped('assigned_staff_id')
+            new_assigned_staff_id = self.env['mitrasystem.staff'].browse(vals['assigned_staff_id']) if vals['assigned_staff_id'] else False
+        
         result = super(ProjectSchedule, self).write(vals)
+        
+        # Create handover record if assignment changed
+        if (old_assigned_to and new_assigned_to and old_assigned_to != new_assigned_to) or \
+           (old_assigned_staff_id and new_assigned_staff_id and old_assigned_staff_id != new_assigned_staff_id):
+            for record in self:
+                # Create handover record
+                handover_vals = {
+                    'project_id': record.project_id.id,
+                    'task': record.task_name,
+                    'date': fields.Date.today(),
+                }
+                
+                # Set the from fields
+                if old_assigned_to:
+                    handover_vals['from_user_id'] = old_assigned_to[0].id
+                elif old_assigned_staff_id:
+                    handover_vals['from_staff_id'] = old_assigned_staff_id[0].id
+                
+                # Set the to fields
+                if new_assigned_to:
+                    handover_vals['to_user_id'] = new_assigned_to.id
+                elif new_assigned_staff_id:
+                    handover_vals['to_staff_id'] = new_assigned_staff_id.id
+                
+                # Create the handover record
+                self.env['mitrasystem.handover'].create(handover_vals)
+        
         # Update project progress when task progress changes
         if 'progress' in vals or 'state' in vals:
             projects_to_update = self.mapped('project_id')
@@ -106,11 +148,20 @@ class ProjectSchedule(models.Model):
         projects = records.mapped('project_id')
         for project in projects:
             project._compute_progress_from_tasks()
-        return records
-
+        return records    
+    
     @api.model
     def search(self, domain, offset=0, limit=None, order=None):
         user = self.env.user
         if user.has_group('mitrasystem.group_pic_proyek'):
-            domain = ['|', ('assigned_to', '=', user.id), ('assigned_to', '=', False)] + domain
+            # Find staff linked to current user
+            staff = self.env['mitrasystem.staff'].search([('user_id', '=', user.id)], limit=1)
+            
+            domain_extension = ['|', ('assigned_to', '=', user.id), ('assigned_to', '=', False)]
+            
+            # Add staff condition if staff record exists for current user
+            if staff:
+                domain_extension = ['|'] + domain_extension + [('assigned_staff_id', '=', staff.id)]
+                
+            domain = domain_extension + domain
         return super(ProjectSchedule, self).search(domain, offset=offset, limit=limit, order=order)

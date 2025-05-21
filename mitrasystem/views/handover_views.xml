@@ -4,12 +4,14 @@
         <field name="name">mitrasystem.handover.form</field>
         <field name="model">mitrasystem.handover</field>
         <field name="arch" type="xml">
-            <form string="Handover Tugas">
+            <form string="Handover Tugas">                
                 <group>
                     <field name="name" readonly="1"/>
                     <field name="project_id"/>
                     <field name="task"/>
+                    <field name="from_user_id"/>
                     <field name="from_staff_id"/>
+                    <field name="to_user_id"/>
                     <field name="to_staff_id"/>
                     <field name="date"/>
                     <field name="status"/>
@@ -23,12 +25,14 @@
     <record id="view_handover_list" model="ir.ui.view">
         <field name="name">mitrasystem.handover.list</field>
         <field name="model">mitrasystem.handover</field>
-        <field name="arch" type="xml">
+        <field name="arch" type="xml">            
             <list string="Daftar Handover">
                 <field name="name"/>
                 <field name="project_id"/>
                 <field name="task"/>
+                <field name="from_user_id"/>
                 <field name="from_staff_id"/>
+                <field name="to_user_id"/>
                 <field name="to_staff_id"/>
                 <field name="date"/>
                 <field name="status"/>
