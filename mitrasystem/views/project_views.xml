@@ -26,7 +26,7 @@
                         <group>
                             <field name="status"/>
                             <field name="auto_progress"/>
-                            <field name="progress" widget="progressbar" readonly="auto_progress"/>
+                            <field name="progress" readonly="auto_progress"/>
                         </group>
                     </group>
                 </sheet>

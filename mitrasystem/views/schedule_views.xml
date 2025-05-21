@@ -22,7 +22,7 @@
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="auto_progress"/>
-                            <field name="progress" widget="progressbar" readonly="auto_progress"/>
+                            <field name="progress" readonly="auto_progress"/>
                             <field name="color" widget="color_picker"/>
                         </group>
                     </group>
