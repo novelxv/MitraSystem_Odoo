@@ -3,12 +3,12 @@
     <record id="view_handover_form" model="ir.ui.view">
         <field name="name">mitrasystem.handover.form</field>
         <field name="model">mitrasystem.handover</field>
-        <field name="arch" type="xml">
-            <form string="Handover Tugas">                
+        <field name="arch" type="xml">            <form string="Handover Tugas">                
                 <group>
                     <field name="name" readonly="1"/>
                     <field name="project_id"/>
-                    <field name="task"/>
+                    <field name="task_id" domain="[('project_id', '=', project_id)]"/>
+                    <field name="task" readonly="1"/>
                     <field name="from_user_id"/>
                     <field name="from_staff_id"/>
                     <field name="to_user_id"/>
@@ -25,10 +25,10 @@
     <record id="view_handover_list" model="ir.ui.view">
         <field name="name">mitrasystem.handover.list</field>
         <field name="model">mitrasystem.handover</field>
-        <field name="arch" type="xml">            
-            <list string="Daftar Handover">
+        <field name="arch" type="xml">              <list string="Daftar Handover">
                 <field name="name"/>
                 <field name="project_id"/>
+                <field name="task_id"/>
                 <field name="task"/>
                 <field name="from_user_id"/>
                 <field name="from_staff_id"/>

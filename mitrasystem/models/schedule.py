@@ -107,15 +107,14 @@ class ProjectSchedule(models.Model):
             new_assigned_staff_id = self.env['mitrasystem.staff'].browse(vals['assigned_staff_id']) if vals['assigned_staff_id'] else False
         
         result = super(ProjectSchedule, self).write(vals)
-        
-        # Create handover record if assignment changed
+          # Create handover record if assignment changed
         if (old_assigned_to and new_assigned_to and old_assigned_to != new_assigned_to) or \
            (old_assigned_staff_id and new_assigned_staff_id and old_assigned_staff_id != new_assigned_staff_id):
             for record in self:
                 # Create handover record
                 handover_vals = {
                     'project_id': record.project_id.id,
-                    'task': record.task_name,
+                    'task_id': record.id,
                     'date': fields.Date.today(),
                 }
                 

@@ -7,7 +7,8 @@ class MitraSystemHandover(models.Model):
     name = fields.Char(string='ID', required=True, copy=False, readonly=True,
                        default=lambda self: 'New')
     project_id = fields.Many2one('mitrasystem.project', string='Proyek', required=True)
-    task = fields.Char(string='Tugas', required=True)
+    task_id = fields.Many2one('mitrasystem.schedule', string='Tugas', required=True)
+    task = fields.Char(string='Nama Tugas', related='task_id.task_name', store=True)
     # Using both users and staff as options
     from_user_id = fields.Many2one('res.users', string='Dari (User)')
     from_staff_id = fields.Many2one('mitrasystem.staff', string='Dari (Staf)')
